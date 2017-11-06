@@ -462,7 +462,7 @@ void NavMeshTesterTool::handleMenu()
 	}
 	imguiUnindent();
 
-	imguiSeparator();	
+	imguiSeparator();
 }
 
 void NavMeshTesterTool::handleClick(const float* /*s*/, const float* p, bool shift)
@@ -858,10 +858,19 @@ void NavMeshTesterTool::recalc()
 				dtVcopy(epos, m_epos);
 				if (m_polys[m_npolys-1] != m_endRef)
 					m_navQuery->closestPointOnPoly(m_polys[m_npolys-1], m_epos, epos, 0);
-				
+
+#ifdef DUMP_REQS
+				for (int p = 0; p < m_npolys; ++p)
+					printf("poly[%d]: 0x%x\n", p, m_polys[p]);
+#endif
 				m_navQuery->findStraightPath(m_spos, epos, m_polys, m_npolys,
 											 m_straightPath, m_straightPathFlags,
 											 m_straightPathPolys, &m_nstraightPath, MAX_POLYS, m_straightPathOptions);
+
+#ifdef DUMP_REQS
+				for (int p = 0; p < m_nstraightPath; ++p)
+					printf("pt[%d]: {%f, %f, %f}\n", p, m_straightPath[p*3], m_straightPath[p*3+1], m_straightPath[p*3+2]);
+#endif				
 			}
 		}
 		else
@@ -912,6 +921,9 @@ void NavMeshTesterTool::recalc()
 				// No hit
 				dtVcopy(m_hitPos, m_epos);
 				m_hitResult = false;
+#ifdef DUMP_REQS
+			printf("no hit\n"); 
+#endif
 			}
 			else
 			{
@@ -919,6 +931,12 @@ void NavMeshTesterTool::recalc()
 				dtVlerp(m_hitPos, m_spos, m_epos, t);
 				m_hitResult = true;
 			}
+
+#ifdef DUMP_REQS
+			printf("hit -> t %f\t pos %f %f %f\n", t, m_hitPos[0], m_hitPos[1], m_hitPos[2]);
+#endif
+
+
 			// Adjust height.
 			if (m_npolys > 0)
 			{

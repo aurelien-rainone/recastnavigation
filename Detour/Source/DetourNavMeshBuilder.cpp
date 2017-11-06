@@ -53,7 +53,7 @@ static int compareItemX(const void* va, const void* vb)
 		return -1;
 	if (a->bmin[2] > b->bmin[2])
 		return 1;
-	return 0;
+    return va < vb? -1 : 1;
 }
 
 static int compareItemY(const void* va, const void* vb)
@@ -72,7 +72,7 @@ static int compareItemY(const void* va, const void* vb)
 		return -1;
 	if (a->bmin[0] > b->bmin[0])
 		return 1;
-	return 0;
+    return va < vb? -1 : 1;
 }
 
 static int compareItemZ(const void* va, const void* vb)
@@ -87,11 +87,11 @@ static int compareItemZ(const void* va, const void* vb)
 		return -1;
 	if (a->bmin[0] > b->bmin[0])
 		return 1;
-	if (a->bmin[0] < b->bmin[1])
+	if (a->bmin[1] < b->bmin[1])
 		return -1;
-	if (a->bmin[0] > b->bmin[0])
+	if (a->bmin[1] > b->bmin[1])
 		return 1;
-	return 0;
+    return va < vb? -1 : 1;
 }
 
 static void calcExtends(BVItem* items, const int /*nitems*/, const int imin, const int imax,

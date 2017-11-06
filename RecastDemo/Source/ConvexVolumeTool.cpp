@@ -193,6 +193,11 @@ void ConvexVolumeTool::handleClick(const float* /*s*/, const float* p, bool shif
 					minh = rcMin(minh, verts[i*3+1]);
 				minh -= m_boxDescent;
 				maxh = minh + m_boxHeight;
+				for (int i=0; i < m_nhull; i++)
+				{
+					printf("verts[%d]: %f %f %f\n", i, verts[3*i], verts[3*i+1], verts[3*i+2]);
+				}
+				printf("minh: %f maxh: %f\n", minh, maxh);
 
 				if (m_polyOffset > 0.01f)
 				{
